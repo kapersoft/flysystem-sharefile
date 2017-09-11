@@ -7,7 +7,7 @@ use League\Flysystem\Config;
 use Kapersoft\Sharefile\Client;
 
 /**
- * Online Flysystem ShareFile Adapter tests
+ * Online Flysystem ShareFile Adapter tests.
  *
  * @author   Jan Willem Kaper <kapersoft@gmail.com>
  * @license  MIT (see License.txt)

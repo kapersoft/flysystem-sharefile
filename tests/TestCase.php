@@ -54,9 +54,9 @@ abstract class TestCase extends PHPUnit_Framework_Testcase
      */
     public function setUp()
     {
-        if (!$this->checkEnvironmentVariables()) {
-            $this->markTestSkipped('No ShareFile credentials are found. ' .
-                'Fill in your ShareFile credentials under section <PHP> in the file ' .
+        if (! $this->checkEnvironmentVariables()) {
+            $this->markTestSkipped('No ShareFile credentials are found. '.
+                'Fill in your ShareFile credentials under section <PHP> in the file '.
                 'phpunit.xml.dist in the project root folder.');
         }
 
@@ -84,7 +84,7 @@ abstract class TestCase extends PHPUnit_Framework_Testcase
      */
     protected function checkEnvironmentVariables():bool
     {
-        return !$this->varEmpty(
+        return ! $this->varEmpty(
             getenv('SHAREFILE_ROOT'),
             getenv('SHAREFILE_HOSTNAME'),
             getenv('SHAREFILE_CLIENT_ID'),
@@ -120,7 +120,7 @@ abstract class TestCase extends PHPUnit_Framework_Testcase
     {
         $this->webdavRoot = getenv('WEBDAV_ROOT');
 
-        $guessedUrl = 'https://' . str_replace(
+        $guessedUrl = 'https://'.str_replace(
             'sharefile.com',
             'sharefile-webdav.com',
             strtolower(getenv('SHAREFILE_HOSTNAME'))
@@ -232,7 +232,7 @@ abstract class TestCase extends PHPUnit_Framework_Testcase
     {
         $location = $this->getResourceLocation('/');
 
-        $this->webdavClient->request('DELETE', $location . '/');
+        $this->webdavClient->request('DELETE', $location.'/');
     }
 
     /**
@@ -240,7 +240,7 @@ abstract class TestCase extends PHPUnit_Framework_Testcase
      */
     protected function randomFileName():string
     {
-        return $this->faker()->name . '.' . $this->faker()->fileExtension;
+        return $this->faker()->name.'.'.$this->faker()->fileExtension;
     }
 
     /**
@@ -319,11 +319,11 @@ abstract class TestCase extends PHPUnit_Framework_Testcase
             ['test 1/test.txt'],
             ['test/test 1.txt'],
             ['test  1/test  2.txt'],
-            [$this->faker()->word . '/' . $this->randomFileName()],
-            [$this->faker()->word . '/' . $this->randomFileName()],
-            [$this->faker()->word . '/' . $this->randomFileName()],
-            [$this->faker()->word . '/' . $this->randomFileName()],
-            [$this->faker()->word . '/' . $this->randomFileName()],
+            [$this->faker()->word.'/'.$this->randomFileName()],
+            [$this->faker()->word.'/'.$this->randomFileName()],
+            [$this->faker()->word.'/'.$this->randomFileName()],
+            [$this->faker()->word.'/'.$this->randomFileName()],
+            [$this->faker()->word.'/'.$this->randomFileName()],
         ];
     }
 
@@ -337,8 +337,8 @@ abstract class TestCase extends PHPUnit_Framework_Testcase
         $provider = [];
         foreach ($this->filesProvider() as $filename) {
             $filename = $filename[0];
-            $provider[] = [$filename, '/target/' . $filename];
-            $provider[] = [$filename, 'copy of ' . basename($filename)];
+            $provider[] = [$filename, '/target/'.$filename];
+            $provider[] = [$filename, 'copy of '.basename($filename)];
         }
 
         return $provider;

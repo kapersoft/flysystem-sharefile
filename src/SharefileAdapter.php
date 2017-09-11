@@ -80,11 +80,11 @@ class SharefileAdapter extends AbstractAdapter
      */
     public function read($path)
     {
-        if (!$item = $this->getItemByPath($path)) {
+        if (! $item = $this->getItemByPath($path)) {
             return false;
         }
 
-        if (!$this->checkAccessControl($item, self::CAN_DOWNLOAD)) {
+        if (! $this->checkAccessControl($item, self::CAN_DOWNLOAD)) {
             return false;
         }
 
@@ -98,7 +98,7 @@ class SharefileAdapter extends AbstractAdapter
      */
     public function listContents($directory = '', $recursive = false)
     {
-        if (!$item = $this->getItemByPath($directory)) {
+        if (! $item = $this->getItemByPath($directory)) {
             return false;
         }
 
@@ -110,7 +110,7 @@ class SharefileAdapter extends AbstractAdapter
      */
     public function getMetadata($path)
     {
-        if (!$item = $this->getItemByPath($path)) {
+        if (! $item = $this->getItemByPath($path)) {
             return false;
         }
         $metadata = $this->mapItemInfo($item, Util::dirname($path));
@@ -167,15 +167,15 @@ class SharefileAdapter extends AbstractAdapter
      */
     public function rename($path, $newpath)
     {
-        if (!$targetFolderItem = $this->getItemByPath(Util::dirname($newpath))) {
+        if (! $targetFolderItem = $this->getItemByPath(Util::dirname($newpath))) {
             return false;
         }
 
-        if (!$this->checkAccessControl($targetFolderItem, self::CAN_UPLOAD)) {
+        if (! $this->checkAccessControl($targetFolderItem, self::CAN_UPLOAD)) {
             return false;
         }
 
-        if (!$item = $this->getItemByPath($path)) {
+        if (! $item = $this->getItemByPath($path)) {
             return false;
         }
 
@@ -197,15 +197,15 @@ class SharefileAdapter extends AbstractAdapter
      */
     public function copy($path, $newpath)
     {
-        if (!$targetFolderItem = $this->getItemByPath(Util::dirname($newpath))) {
+        if (! $targetFolderItem = $this->getItemByPath(Util::dirname($newpath))) {
             return false;
         }
 
-        if (!$this->checkAccessControl($targetFolderItem, self::CAN_UPLOAD)) {
+        if (! $this->checkAccessControl($targetFolderItem, self::CAN_UPLOAD)) {
             return false;
         }
 
-        if (!$item = $this->getItemByPath($path)) {
+        if (! $item = $this->getItemByPath($path)) {
             return false;
         }
 
@@ -233,11 +233,11 @@ class SharefileAdapter extends AbstractAdapter
      */
     public function deleteDir($dirname)
     {
-        if (!$item = $this->getItemByPath($dirname)) {
+        if (! $item = $this->getItemByPath($dirname)) {
             return false;
         }
 
-        if (!$this->checkAccessControl($item, self::CAN_DELETE_CURRENT_ITEM)) {
+        if (! $this->checkAccessControl($item, self::CAN_DELETE_CURRENT_ITEM)) {
             return false;
         }
 
@@ -254,11 +254,11 @@ class SharefileAdapter extends AbstractAdapter
         $parentFolder = Util::dirname($dirname);
         $folder = basename($dirname);
 
-        if (!$parentFolderItem = $this->getItemByPath($parentFolder)) {
+        if (! $parentFolderItem = $this->getItemByPath($parentFolder)) {
             return false;
         }
 
-        if (!$this->checkAccessControl($parentFolderItem, self::CAN_ADD_FOLDER)) {
+        if (! $this->checkAccessControl($parentFolderItem, self::CAN_ADD_FOLDER)) {
             return false;
         }
 
@@ -280,12 +280,12 @@ class SharefileAdapter extends AbstractAdapter
      */
     public function readAndDelete($path)
     {
-        if (!$item = $this->getItemByPath($path)) {
+        if (! $item = $this->getItemByPath($path)) {
             return false;
         }
 
-        if (!$this->checkAccessControl($item, self::CAN_DOWNLOAD) ||
-            !$this->checkAccessControl($item, self::CAN_DELETE_CURRENT_ITEM)) {
+        if (! $this->checkAccessControl($item, self::CAN_DOWNLOAD) ||
+            ! $this->checkAccessControl($item, self::CAN_DELETE_CURRENT_ITEM)) {
             return false;
         }
 
@@ -317,11 +317,11 @@ class SharefileAdapter extends AbstractAdapter
      */
     protected function uploadFile(string $path, string $contents, bool $overwrite = false)
     {
-        if (!$parentFolderItem = $this->getItemByPath(Util::dirname($path))) {
+        if (! $parentFolderItem = $this->getItemByPath(Util::dirname($path))) {
             return false;
         }
 
-        if (!$this->checkAccessControl($parentFolderItem, self::CAN_UPLOAD)) {
+        if (! $this->checkAccessControl($parentFolderItem, self::CAN_UPLOAD)) {
             return false;
         }
 
@@ -350,7 +350,7 @@ class SharefileAdapter extends AbstractAdapter
      */
     protected function prepareUploadFile(string $filename, string $contents):string
     {
-        $filename = tempnam(sys_get_temp_dir(), '') . '/' . $filename;
+        $filename = tempnam(sys_get_temp_dir(), '').'/'.$filename;
         unlink(Util::dirname($filename));
         mkdir(Util::dirname($filename));
         file_put_contents($filename, $contents);
@@ -382,12 +382,12 @@ class SharefileAdapter extends AbstractAdapter
     {
         $timestamp = $item['ClientModifiedDate'] ?? $item['ClientCreatedDate'] ??
             $item['CreationDate'] ?? $item['ProgenyEditDate'] ?? '';
-        $timestamp = !empty($timestamp) ? strtotime($timestamp) : false;
+        $timestamp = ! empty($timestamp) ? strtotime($timestamp) : false;
 
         if ($path == '.') {
             $path = '';
         }
-        $path = trim($path . '/' . $item['FileName'], '/');
+        $path = trim($path.'/'.$item['FileName'], '/');
 
         if ($this->isShareFileApiModelsFile($item)) {
             $mimetype = Util::guessMimeType($item['FileName'], $contents);
@@ -408,7 +408,7 @@ class SharefileAdapter extends AbstractAdapter
                 'basename' => pathinfo($item['FileName'], PATHINFO_FILENAME),
                 'type' => $type,
                 'size' => $item['FileSizeBytes'],
-                'contents' =>  !empty($contents) ? $contents : false,
+                'contents' =>  ! empty($contents) ? $contents : false,
                 'stream' => false,
             ],
             $this->returnShareFileItem ? ['sharefile_item' => $item] : []
@@ -450,7 +450,7 @@ class SharefileAdapter extends AbstractAdapter
 
         $children = $this->client->getItemById($item['Id'], true);
 
-        if ($children['FileCount'] < 2 || !isset($children['Children'])) {
+        if ($children['FileCount'] < 2 || ! isset($children['Children'])) {
             return [];
         }
 
@@ -460,7 +460,7 @@ class SharefileAdapter extends AbstractAdapter
 
         if ($recursive) {
             foreach ($children as $child) {
-                $path = $path . '/' . $child['FileName'];
+                $path = $path.'/'.$child['FileName'];
 
                 $itemList = array_merge(
                     $itemList,
@@ -527,7 +527,7 @@ class SharefileAdapter extends AbstractAdapter
         if ($path == '.') {
             $path = '';
         }
-        $path = '/' . trim($this->applyPathPrefix($path), '/');
+        $path = '/'.trim($this->applyPathPrefix($path), '/');
 
         try {
             $item = $this->client->getItemByPath($path);
