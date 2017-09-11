@@ -2,7 +2,7 @@
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/kapersoft/flysystem-sharefile.svg?style=flat-square)](https://packagist.org/packages/kapersoft/flysystem-sharefile)
 [![Build Status](https://img.shields.io/travis/kapersoft/flysystem-sharefile/master.svg?style=flat-square)](https://travis-ci.org/kapersoft/flysystem-sharefile)
-[![StyleCI](https://styleci.io/repos/000000/shield?branch=master)](https://styleci.io/repos/000000)
+[![StyleCI](https://styleci.io/repos/103178039/shield?branch=master)](https://styleci.io/repos/103178039)
 [![Quality Score](https://img.shields.io/scrutinizer/g/kapersoft/flysystem-sharefile.svg?style=flat-square)](https://scrutinizer-ci.com/g/kapersoft/flysystem-sharefile)
 [![Total Downloads](https://img.shields.io/packagist/dt/kapersoft/flysystem-sharefile.svg?style=flat-square)](https://packagist.org/packages/kapersoft/flysystem-sharefile)
 
