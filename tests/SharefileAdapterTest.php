@@ -14,7 +14,7 @@ use Kapersoft\Sharefile\Exceptions\BadRequest;
 use Kapersoft\FlysystemSharefile\SharefileAdapter;
 
 /**
- * Offline Flysystem ShareFile Adapter tests
+ * Offline Flysystem ShareFile Adapter tests.
  *
  * @author   Jan Willem Kaper <kapersoft@gmail.com>
  * @license  MIT (see License.txt)
@@ -169,11 +169,11 @@ class SharefileAdapterTest extends TestCase
             ])
         );
 
-        $sharefileItemFolder = $this->mockSharefileItem($directory . '/folder', [
+        $sharefileItemFolder = $this->mockSharefileItem($directory.'/folder', [
             'odata.type'   => 'ShareFile.Api.Models.Folder',
             'Id' => '2',
         ]);
-        $sharefileItemFile = $this->mockSharefileItem($directory . '/folder/file.txt', [
+        $sharefileItemFile = $this->mockSharefileItem($directory.'/folder/file.txt', [
             'odata.type'   => 'ShareFile.Api.Models.File',
             'Id' => '3',
         ]);
@@ -196,11 +196,11 @@ class SharefileAdapterTest extends TestCase
         $result = $this->adapter->listContents($directory, true);
 
         $expectedResult = [
-            $this->calculateExpectedMetadata($directory . '/folder', [
+            $this->calculateExpectedMetadata($directory.'/folder', [
                 'mimetype' => 'inode/directory',
                 'type' => 'dir',
             ]),
-            $this->calculateExpectedMetadata($directory . '/folder/file.txt'),
+            $this->calculateExpectedMetadata($directory.'/folder/file.txt'),
         ];
 
         $this->assertsame($expectedResult, $result);
@@ -302,7 +302,7 @@ class SharefileAdapterTest extends TestCase
     public function it_can_move_a_file(string $filename) // @codingStandardsIgnoreLine
     {
         $filenamePrefix = $this->applyPathPrefix($filename);
-        $newPath = '/targetfolder/new name of ' . basename($filename);
+        $newPath = '/targetfolder/new name of '.basename($filename);
         $newPathPrefix = $this->applyPathPrefix($newPath);
         $newPathParent = Util::dirname($newPathPrefix);
 
@@ -348,7 +348,7 @@ class SharefileAdapterTest extends TestCase
     public function it_will_return_false_when_a_move_has_failed(string $filename) // @codingStandardsIgnoreLine
     {
         $filenamePrefix = $this->applyPathPrefix($filename);
-        $newPath = '/targetfolder/new name of ' . basename($filename);
+        $newPath = '/targetfolder/new name of '.basename($filename);
         $newPathPrefix = $this->applyPathPrefix($newPath);
         $newPathParent = Util::dirname($newPathPrefix);
 
@@ -393,7 +393,7 @@ class SharefileAdapterTest extends TestCase
     {
         $filename = basename($filename);
         $filenamePrefix = $this->applyPathPrefix($filename);
-        $newPath = 'targetfolder/' . $filename;
+        $newPath = 'targetfolder/'.$filename;
         $newPathPrefix = $this->applyPathPrefix($newPath);
         $newPathParent = Util::dirname($newPathPrefix);
 
@@ -433,7 +433,7 @@ class SharefileAdapterTest extends TestCase
     {
         $filename = basename($filename);
         $filenamePrefix = $this->applyPathPrefix($filename);
-        $newPath = 'copy of ' . $filename;
+        $newPath = 'copy of '.$filename;
         $newPathPrefix = $this->applyPathPrefix($newPath);
         $newPathParent = Util::dirname($newPathPrefix);
 
@@ -736,11 +736,11 @@ class SharefileAdapterTest extends TestCase
             'test 1/test.txt',
             'test/test 1.txt',
             'test  1/test  2.txt',
-            $this->faker()->word . '/' . $this->randomFileName(),
-            $this->faker()->word . '/' . $this->randomFileName(),
-            $this->faker()->word . '/' . $this->randomFileName(),
-            $this->faker()->word . '/' . $this->randomFileName(),
-            $this->faker()->word . '/' . $this->randomFileName(),
+            $this->faker()->word.'/'.$this->randomFileName(),
+            $this->faker()->word.'/'.$this->randomFileName(),
+            $this->faker()->word.'/'.$this->randomFileName(),
+            $this->faker()->word.'/'.$this->randomFileName(),
+            $this->faker()->word.'/'.$this->randomFileName(),
         ];
     }
 
@@ -808,7 +808,7 @@ class SharefileAdapterTest extends TestCase
      */
     protected function randomFileName()
     {
-        return $this->faker()->name . '.' . $this->faker()->fileExtension;
+        return $this->faker()->name.'.'.$this->faker()->fileExtension;
     }
 
     /**
@@ -820,6 +820,6 @@ class SharefileAdapterTest extends TestCase
      */
     protected function applyPathPrefix(string $path):string
     {
-        return '/' . trim($this->prefix, '/') . '/' . trim($path, '/');
+        return '/'.trim($this->prefix, '/').'/'.trim($path, '/');
     }
 }
