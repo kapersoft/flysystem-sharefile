@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit bootstrap="vendor/autoload.php"
+         backupGlobals="false"
+         backupStaticAttributes="false"
+         colors="true"
+         verbose="true"
+         convertErrorsToExceptions="true"
+         convertNoticesToExceptions="true"
+         convertWarningsToExceptions="true"
+         processIsolation="false"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="FlySystem ShareFile Test">
+            <directory suffix=".php">./tests/</directory>
+        </testsuite>
+    </testsuites>
+    <filter>
+        <whitelist>
+            <directory suffix=".php">./src/</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="tap" target="build/report.tap"/>
+        <log type="junit" target="build/report.junit.xml"/>
+        <log type="coverage-html" target="build/coverage" charset="UTF-8" yui="true" highlight="true"/>
+        <log type="coverage-text" target="build/coverage.txt"/>
+        <log type="coverage-clover" target="build/logs/clover.xml"/>
+    </logging>
+    <php>
+        <env name="QUICK_ONLINE_TEST" value="true" />
+        <env name="SHAREFILE_ROOT" value="/Personal Folders/Flysystem-sharefile-test" />
+        <env name="SHAREFILE_HOSTNAME" value="" />
+        <env name="SHAREFILE_CLIENT_ID" value="" />
+        <env name="SHAREFILE_CLIENT_SECRET" value="" />
+        <env name="SHAREFILE_USERNAME" value="" />
+        <env name="SHAREFILE_PASSWORD" value="" />
+        <env name="WEBDAV_ROOT" value="/My Files &amp; Folders/Flysystem-sharefile-test" />
+        <env name="WEBDAV_URL" value="sharefile webdav url (optional)" />
+        <env name="WEBDAV_USERNAME" value="password (optional)" />
+        <env name="WEBDAV_PASSWORD" value="password (optional)" />
+    </php>
+</phpunit>
