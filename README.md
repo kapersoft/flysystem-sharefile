@@ -49,7 +49,7 @@ composer test
 `SharefileAdapterFunctionalTest.php` is a set of functional tests using an online ShareFile drive . To enable this test, fill in your ShareFile credentials under section `<PHP>` of the `phpunit.xml.dist`-file in the project root folder. 
 Each test will create the folder named `Flysystem-sharefile-test` in your personal ShareFile drive for storing temporary test-files. When the test is completed, the `Flysystem-sharefile-test`-folder will be removed.
 A [WebDav](https://github.com/fruux/sabre-dav) connection to your ShareFile drive is used to assert all tests.
-_**Note**: Make sure WebDav is enabled for your ShareFile account (see https://support.citrix.com/article/CTX207863 for more information)._
+_Note: Make sure WebDav is enabled for your ShareFile account (see https://support.citrix.com/article/CTX207863 for more information)._
 
 ## Contributing
 Please see [CONTRIBUTING](CONTRIBUTING.md) for details.
