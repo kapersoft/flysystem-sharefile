@@ -190,7 +190,6 @@ class SharefileAdapterTest extends TestCase
         $this->assertsame($expectedResult, $result);
     }
 
-
     /**
      * Test for it_can_list_contents.
      *
