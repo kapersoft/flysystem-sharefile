@@ -54,7 +54,7 @@ class SharefileAdapter extends AbstractAdapter
      *
      * @param Client $client              Instance of Kapersoft\Sharefile\Client
      * @param string $prefix              Folder prefix
-     * @param bool   $returnShareFileItem Indicated if getMetadatsa/listContents should return ShareFile item array.
+     * @param bool   $returnShareFileItem Indicated if getMetadata/listContents should return ShareFile item array.
      *
      * @param string $prefix
      */
