@@ -381,7 +381,7 @@ class SharefileAdapter extends AbstractAdapter
         return false;
     }
 
-      /**
+    /**
      * Map ShareFile item to FlySystem metadata.
      *
      * @param array       $item     ShareFile item
