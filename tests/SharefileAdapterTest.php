@@ -8,6 +8,7 @@ use Prophecy\Argument;
 use League\Flysystem\Util;
 use League\Flysystem\Config;
 use GuzzleHttp\Psr7\Response;
+use org\bovigo\vfs\vfsStream;
 use Kapersoft\Sharefile\Client;
 use PHPUnit\Framework\TestCase;
 use Kapersoft\Sharefile\Exceptions\BadRequest;
@@ -38,6 +39,13 @@ class SharefileAdapterTest extends TestCase
     protected $adapter;
 
     /**
+     * Virtual FS root.
+     *
+     * @var \org\bovigo\vfs\vfsStream
+     * */
+    protected $vfsRoot;
+
+    /**
      * Folder prefix.
      *
      * @var  string
@@ -49,6 +57,8 @@ class SharefileAdapterTest extends TestCase
      */
     public function setUp()
     {
+        $this->vfsRoot = vfsStream::setup('home');
+
         $this->client = $this->prophesize(Client::class);
 
         $this->prefix = '/prefix';
@@ -109,7 +119,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_can_read_and_readstream.
+     * Test for it_can_read.
      *
      * @test
      *
@@ -117,7 +127,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_can_read_and_readstream(string $filename) // @codingStandardsIgnoreLine
+    public function it_can_read(string $filename) // @codingStandardsIgnoreLine
     {
         $contents = $this->faker()->text;
 
@@ -140,13 +150,46 @@ class SharefileAdapterTest extends TestCase
          ]);
         $result = $this->adapter->read($filename);
         $this->assertsame($expectedResult, $result);
+    }
+
+    /**
+     * Test for it_can_readstream.
+     *
+     * @test
+     *
+     * @param string $filename Filename used for testing
+     *
+     * @dataProvider  filenameProvider
+     */
+    public function it_can_readstream(string $filename) // @codingStandardsIgnoreLine
+    {
+        $this->client->getItemByPath($this->applyPathPrefix($filename))->willReturn(
+            $this->mockSharefileItem($filename, [
+                'Id' => '2',
+                'Parent' => ['Id' => 1],
+            ])
+        );
+
+        $this->client->getItemById(1)->willReturn([
+            'odata.type'   => 'ShareFile.Api.Models.Folder',
+            'Info' => ['CanDownload'   => 1],
+        ]);
+
+        $contents = $this->faker()->text;
+        $mockFile = $this->createMockFile($filename, $contents);
+
+        $this->client->getItemDownloadUrl(Argument::any())->willReturn(['DownloadUrl' => $mockFile->url()]);
 
         $result = $this->adapter->readStream($filename);
+
         $this->assertInternalType('resource', $result['stream']);
+        $this->assertSame($contents, stream_get_contents($result['stream']));
+
         $result['stream'] = false;
-        unset($expectedResult['contents']);
+        $expectedResult = $this->calculateExpectedMetadata($filename);
         $this->assertsame($expectedResult, $result);
     }
+
 
     /**
      * Test for it_can_list_contents.
@@ -236,7 +279,7 @@ class SharefileAdapterTest extends TestCase
             ];
         });
 
-        $client->uploadFileStandard(Argument::any(), 1, Argument::any(), Argument::any())->willReturn('');
+        $this->client->uploadFileStreamed(Argument::any(), 1, basename($filename), false, true)->willReturn('');
 
         $result = $this->adapter->{$method}($filename, $contents);
 
@@ -276,15 +319,13 @@ class SharefileAdapterTest extends TestCase
             ];
         });
 
-        $client->uploadFileStandard(Argument::any(), 1, Argument::any(), Argument::any())->willReturn('');
+        $this->client->uploadFileStreamed(Argument::any(), 1, basename($filename), false, true)->willReturn('');
 
         $resource = tmpfile();
         fseek($resource, 0);
         fwrite($resource, $contents);
 
-        $expectedResult = $this->calculateExpectedMetadata($filename, [
-            'contents' => $contents,
-        ]);
+        $expectedResult = $this->calculateExpectedMetadata($filename);
 
         $this->assertSame($expectedResult, $this->adapter->writeStream($filename, $resource, new Config()));
         $this->assertSame($expectedResult, $this->adapter->updateStream($filename, $resource, new Config()));
@@ -451,7 +492,7 @@ class SharefileAdapterTest extends TestCase
 
         $this->client->getItemContents(2)->willReturn('foo');
 
-        $this->client->uploadFileStandard(Argument::any(), 1, false, true)->willReturn('');
+        $this->client->uploadFileStreamed(Argument::any(), 1, $newPath, false, true)->willReturn('');
 
         $this->client->getItemByPath($newPathPrefix)->willReturn(
             $this->mockSharefileItem($newPath)
@@ -821,5 +862,18 @@ class SharefileAdapterTest extends TestCase
     protected function applyPathPrefix(string $path):string
     {
         return '/'.trim($this->prefix, '/').'/'.trim($path, '/');
+    }
+
+    /**
+     * Create a mock file.
+     *
+     * @param string $filename Filename
+     * @param mixed  $contents Contents (optional)
+     *
+     * @return \org\bovigo\vfs\vfsStreamFile
+     */
+    private function createMockFile(string $filename, $contents = '')
+    {
+        return vfsStream::newFile($filename)->at($this->vfsRoot)->withContent($contents);
     }
 }

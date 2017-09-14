@@ -7,7 +7,6 @@ use League\Flysystem\Util;
 use League\Flysystem\Config;
 use Kapersoft\Sharefile\Client;
 use League\Flysystem\Adapter\AbstractAdapter;
-use League\Flysystem\Adapter\Polyfill\StreamedTrait;
 use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;
 
 /**
@@ -20,7 +19,7 @@ use League\Flysystem\Adapter\Polyfill\NotSupportingVisibilityTrait;
  */
 class SharefileAdapter extends AbstractAdapter
 {
-    use StreamedTrait;
+//    use StreamedTrait;
     use NotSupportingVisibilityTrait;
 
     /** ShareFile access control constants */
@@ -96,6 +95,26 @@ class SharefileAdapter extends AbstractAdapter
     /**
      * {@inheritdoc}
      */
+    public function readStream($path)
+    {
+        if (! $item = $this->getItemByPath($path)) {
+            return false;
+        }
+
+        if (! $this->checkAccessControl($item, self::CAN_DOWNLOAD)) {
+            return false;
+        }
+
+        $url = $this->client->getItemDownloadUrl($item['Id']);
+
+        $stream = fopen($url['DownloadUrl'], 'r');
+
+        return $this->mapItemInfo($item, Util::dirname($path), null, $stream);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function listContents($directory = '', $recursive = false)
     {
         if (! $item = $this->getItemByPath($directory)) {
@@ -157,9 +176,25 @@ class SharefileAdapter extends AbstractAdapter
     /**
      * {@inheritdoc}
      */
+    public function writeStream($path, $resource, Config $config = null)
+    {
+        return $this->uploadFile($path, $resource, true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function update($path, $contents, Config $config = null)
     {
         return $this->uploadFile($path, $contents, true);
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function updateStream($path, $resource, Config $config = null)
+    {
+        return $this->uploadFile($path, $resource, true);
     }
 
     /**
@@ -309,13 +344,13 @@ class SharefileAdapter extends AbstractAdapter
     /**
      * Upload a file to ShareFile.
      *
-     * @param string $path      File path
-     * @param string $contents  Contents of the file
-     * @param bool   $overwrite Overwrite file is it exists
+     * @param string          $path      File path
+     * @param resource|string $contents  Resource or contents of the file
+     * @param bool            $overwrite Overwrite file when it exists
      *
      * @return array|false
      */
-    protected function uploadFile(string $path, string $contents, bool $overwrite = false)
+    protected function uploadFile(string $path, $contents, bool $overwrite = false)
     {
         if (! $parentFolderItem = $this->getItemByPath(Util::dirname($path))) {
             return false;
@@ -325,14 +360,20 @@ class SharefileAdapter extends AbstractAdapter
             return false;
         }
 
-        $filename = $this->prepareUploadFile(basename($path), $contents);
+        if (is_string($contents)) {
+            $stream = fopen('php://memory', 'r+');
+            fwrite($stream, $contents);
+            rewind($stream);
+        } else {
+            $stream = $contents;
+        }
 
-        $this->client->uploadFileStandard($filename, $parentFolderItem['Id'], false, $overwrite);
-
-        $this->removeUploadFile($filename);
+        $this->client->uploadFileStreamed($stream, $parentFolderItem['Id'], basename($path), false, $overwrite);
 
         if ($metadata = $this->getMetadata($path)) {
-            $metadata['contents'] = $contents;
+            if (is_string($contents)) {
+                $metadata['contents'] = $contents;
+            }
 
             return $metadata;
         }
@@ -340,45 +381,17 @@ class SharefileAdapter extends AbstractAdapter
         return false;
     }
 
-    /**
-     * Prepares upload-file.
-     *
-     * @param string $filename Filename
-     * @param string $contents Contents of the file
-     *
-     * @return string
-     */
-    protected function prepareUploadFile(string $filename, string $contents):string
-    {
-        $filename = tempnam(sys_get_temp_dir(), '').'/'.$filename;
-        unlink(Util::dirname($filename));
-        mkdir(Util::dirname($filename));
-        file_put_contents($filename, $contents);
-
-        return $filename;
-    }
-
-    /**
-     * Removes temporary directory and upload-file.
-     *
-     * @param string $filename Filename.
-     */
-    protected function removeUploadFile(string $filename)
-    {
-        unlink($filename);
-        rmdir(Util::dirname($filename));
-    }
-
-    /**
+      /**
      * Map ShareFile item to FlySystem metadata.
      *
      * @param array       $item     ShareFile item
      * @param string      $path     Base path
      * @param string|null $contents Contents of the file (optional)
+     * @param mixed|null  $stream   Resource handle of the file (optional)
      *
      * @return array
      */
-    protected function mapItemInfo(array $item, string $path = '', string $contents = null): array
+    protected function mapItemInfo(array $item, string $path = '', string $contents = null, $stream = null): array
     {
         $timestamp = $item['ClientModifiedDate'] ?? $item['ClientCreatedDate'] ??
             $item['CreationDate'] ?? $item['ProgenyEditDate'] ?? '';
@@ -409,7 +422,7 @@ class SharefileAdapter extends AbstractAdapter
                 'type' => $type,
                 'size' => $item['FileSizeBytes'],
                 'contents' =>  ! empty($contents) ? $contents : false,
-                'stream' => false,
+                'stream' => ! empty($stream) ? $stream : false,
             ],
             $this->returnShareFileItem ? ['sharefile_item' => $item] : []
         );
