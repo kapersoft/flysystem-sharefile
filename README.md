@@ -18,7 +18,7 @@ composer require kapersoft/flysystem-sharefile
 ## Usage
 The first thing you need to do is get an OAuth2 key. Go to the [Get an API key](https://api.sharefile.com/rest/oauth2-request.aspx) section on the [ShareFile API site](https://api.sharefile.com/) to get this key.
 
-With an OAuth2 key you can instantiate a `Kapersoft\Sharefile\Client` and setup a Flysystem adapter:
+With an OAuth2 key you can instantiate a `Kapersoft\Sharefile\Client` and setup the Flysystem adapter:
 ``` php
 use League\Flysystem\Filesystem;
 use Kapersoft\Sharefile\Client;
