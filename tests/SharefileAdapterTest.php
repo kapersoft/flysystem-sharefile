@@ -221,14 +221,12 @@ class SharefileAdapterTest extends TestCase
         ]);
         $client->getItemById(1, true)->will(function () use ($client, $sharefileItemFolder, $sharefileItemFile) {
             $client->getItemById(2, true)->willReturn([
-                'FileCount' => 2,
                 'Children' => [
                         $sharefileItemFile,
                 ],
             ]);
 
             return [
-                'FileCount' => 2,
                 'Children' => [
                     $sharefileItemFolder,
                 ],

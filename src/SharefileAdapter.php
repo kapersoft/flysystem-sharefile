@@ -463,7 +463,7 @@ class SharefileAdapter extends AbstractAdapter
 
         $children = $this->client->getItemById($item['Id'], true);
 
-        if ($children['FileCount'] < 2 || ! isset($children['Children'])) {
+        if (! isset($children['Children']) || count($children['Children']) < 1) {
             return [];
         }
 
