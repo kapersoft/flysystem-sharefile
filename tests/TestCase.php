@@ -31,7 +31,7 @@ abstract class TestCase extends PHPUnit_Framework_Testcase
     /**
      * ShareFile Adapter.
      *
-     * @var \Kapersoft\FlysystemSharefile\\SharefileAdapter
+     * @var \Kapersoft\FlysystemSharefile\SharefileAdapter
      */
     protected $adapter;
 
