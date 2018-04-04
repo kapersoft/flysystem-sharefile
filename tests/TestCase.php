@@ -72,7 +72,6 @@ abstract class TestCase extends PHPUnit_Framework_Testcase
      */
     public function tearDown()
     {
-        unset($this->ftp);
         unset($this->adapter);
         $this->clearResources();
     }
