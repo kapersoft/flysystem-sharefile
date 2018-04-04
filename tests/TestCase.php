@@ -266,8 +266,6 @@ abstract class TestCase extends PHPUnit_Framework_Testcase
         foreach ($arguments as $argument) {
             if (empty($argument)) {
                 return true;
-            } else {
-                continue;
             }
         }
 
