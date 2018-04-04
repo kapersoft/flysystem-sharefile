@@ -118,6 +118,10 @@ class SharefileAdapterFunctionalTest extends TestCase
      */
     public function itCanListContents(string $path)
     {
+        // No file
+        $this->createResourceDir(UTIL::dirname($path));
+        $this->assertCount(0, $this->adapter->listContents(UTIL::dirname($path)));
+
         // Single file
         $contents = $this->faker()->text;
         $this->createResourceFile($path, $contents);
