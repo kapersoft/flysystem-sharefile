@@ -36,7 +36,7 @@
         <env name="SHAREFILE_PASSWORD" value="" />
         <env name="WEBDAV_ROOT" value="/My Files &amp; Folders/Flysystem-sharefile-test" />
         <env name="WEBDAV_URL" value="sharefile webdav url (optional)" />
-        <env name="WEBDAV_USERNAME" value="password (optional)" />
+        <env name="WEBDAV_USERNAME" value="username (optional)" />
         <env name="WEBDAV_PASSWORD" value="password (optional)" />
     </php>
 </phpunit>
