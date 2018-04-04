@@ -17,17 +17,17 @@ use Kapersoft\Sharefile\Client;
 class SharefileAdapterFunctionalTest extends TestCase
 {
     /**
-     * Test for it_can_get_a_client.
+     * Test for itCanGetAClient.
      *
      * @test
      */
-    public function it_can_get_a_client() // @codingStandardsIgnoreLine
+    public function itCanGetAClient()
     {
         $this->assertInstanceOf(Client::class, $this->adapter->getClient());
     }
 
     /**
-     * Test for it_can_find_files.
+     * Test for itCanFindFiles.
      *
      * @test
      *
@@ -35,7 +35,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider  filesProvider
      */
-    public function it_can_find_files(string $name) // @codingStandardsIgnoreLine
+    public function itCanFindFiles(string $name)
     {
         $contents = $this->faker()->text;
         $this->createResourceFile($name, $contents);
@@ -44,7 +44,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_find_files_in_subfolders.
+     * Test for itFindFilesInSubfolders.
      *
      * @test
      *
@@ -52,7 +52,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider  withSubFolderProvider
      */
-    public function it_find_files_in_subfolders(string $path) // @codingStandardsIgnoreLine
+    public function itFindFilesInSubfolders(string $path)
     {
         $contents = $this->faker()->text;
         $this->createResourceFile($path, $contents);
@@ -61,7 +61,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_read.
+     * Test for itCanRead.
      *
      * @test
      *
@@ -69,7 +69,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider filesProvider
      */
-    public function it_can_read(string $name) // @codingStandardsIgnoreLine
+    public function itCanRead(string $name)
     {
         $contents = $this->faker()->text;
         $this->createResourceFile($name, $contents);
@@ -84,7 +84,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_readstream.
+     * Test for itCanReadstream.
      *
      * @test
      *
@@ -92,7 +92,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider filesProvider
      */
-    public function it_can_readstream(string $name) // @codingStandardsIgnoreLine
+    public function itCanReadstream(string $name)
     {
         $contents = $this->faker()->text;
         $this->createResourceFile($name, $contents);
@@ -108,7 +108,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_list_contents.
+     * Test for itCanListContents.
      *
      * @test
      *
@@ -116,7 +116,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider withSubFolderProvider
      */
-    public function it_can_list_contents(string $path) // @codingStandardsIgnoreLine
+    public function itCanListContents(string $path)
     {
         // Single file
         $contents = $this->faker()->text;
@@ -132,7 +132,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_get_metadata.
+     * Test for itCanGetMetadata.
      *
      * @test
      *
@@ -140,7 +140,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider withSubFolderProvider
      */
-    public function it_can_get_metadata(string $path) // @codingStandardsIgnoreLine
+    public function itCanGetMetadata(string $path)
     {
         $contents = $this->faker()->text;
         $this->createResourceFile($path, $contents);
@@ -149,21 +149,11 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_get_size.
-     *
-     * @test
-     *
-     * @param string $path Path used for testing
-     *
-     * @dataProvider withSubFolderProvider
-     */
-
-    /**
-     * Test for it_can_get_size.
+     * Test for itCanGetSize.
      *
      * @test
      */
-    public function it_can_get_size() // @codingStandardsIgnoreLine
+    public function itCanGetSize()
     {
         $contents = $this->faker()->text;
         $this->createResourceFile('foo', $contents);
@@ -172,11 +162,11 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_get_mimetypes.
+     * Test for itCanGetMimetypes.
      *
      * @test
      */
-    public function it_can_get_mimetypes() // @codingStandardsIgnoreLine
+    public function itCanGetMimetypes()
     {
         $this->createResourceFile('foo.json', 'bar');
 
@@ -184,11 +174,11 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_get_mimetypes.
+     * Test for itCanGetTimestamps.
      *
      * @test
      */
-    public function it_can_get_timestamps() // @codingStandardsIgnoreLine
+    public function itCanGetTimestamps()
     {
         $this->createResourceFile('foo', 'bar');
 
@@ -197,7 +187,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_write.
+     * Test for itCanWrite.
      *
      * @test
      *
@@ -205,7 +195,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider filesProvider
      */
-    public function it_can_write(string $filename) // @codingStandardsIgnoreLine
+    public function itCanWrite(string $filename)
     {
         $contents = $this->faker()->text;
 
@@ -222,7 +212,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_update.
+     * Test for itCanUpdate.
      *
      * @test
      *
@@ -230,7 +220,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider filesProvider
      */
-    public function it_can_update(string $filename) // @codingStandardsIgnoreLine
+    public function itCanUpdate(string $filename)
     {
         $contents = $this->faker()->text;
 
@@ -252,7 +242,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_writestream_and_updatestream.
+     * Test for itCanWritestreamAndUpdatestream.
      *
      * @test
      *
@@ -260,7 +250,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider filesProvider
      */
-    public function it_can_writestream_and_updatestream(string $filename) // @codingStandardsIgnoreLine
+    public function itCanWritestreamAndUpdatestream(string $filename)
     {
         $contents = $this->faker()->text;
 
@@ -284,7 +274,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_rename_files.
+     * Test for itCanRenameFiles.
      *
      * @test
      *
@@ -292,7 +282,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider filesProvider
      */
-    public function it_can_rename_files(string $filename) // @codingStandardsIgnoreLine
+    public function itCanRenameFiles(string $filename)
     {
         $this->createResourceFile($filename, 'foo');
         $newFilename = $this->randomFileName();
@@ -305,7 +295,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_rename_files.
+     * Test for itCanCopyFiles.
      *
      * @test
      *
@@ -314,7 +304,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider copyFilesProvider
      */
-    public function it_can_copy_files(string $path, string $newpath) // @codingStandardsIgnoreLine
+    public function itCanCopyFiles(string $path, string $newpath)
     {
         $this->createResourceFile($path, 'foo');
         $this->createResourceDir(UTIL::dirname($newpath));
@@ -328,7 +318,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_delete_files.
+     * Test for itCanDeleteFiles.
      *
      * @test
      *
@@ -336,7 +326,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider filesProvider
      */
-    public function it_can_delete_files(string $filename) // @codingStandardsIgnoreLine
+    public function itCanDeleteFiles(string $filename)
     {
         $this->createResourceFile($filename, 'foo');
 
@@ -347,7 +337,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_create_and_delete_directories.
+     * Test for itCanCreateAndDeleteDirectories.
      *
      * @test
      *
@@ -355,7 +345,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider filesProvider
      */
-    public function it_can_create_and_delete_directories(string $filename) // @codingStandardsIgnoreLine
+    public function itCanCreateAndDeleteDirectories(string $filename)
     {
         $path = substr($filename, 0, -4);
 
@@ -369,7 +359,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_put.
+     * Test for itCanPut.
      *
      * @test
      *
@@ -377,7 +367,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider filesProvider
      */
-    public function it_can_put(string $filename) // @codingStandardsIgnoreLine
+    public function itCanPut(string $filename)
     {
         $contents = $this->faker()->text;
         $this->createResourceFile($filename, $contents);
@@ -397,7 +387,7 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_read_and_delete_files.
+     * Test for itCanReadAndDeleteFiles.
      *
      * @test
      *
@@ -405,7 +395,7 @@ class SharefileAdapterFunctionalTest extends TestCase
      *
      * @dataProvider filesProvider
      */
-    public function it_can_read_and_delete_files(string $filename) // @codingStandardsIgnoreLine
+    public function itCanReadAndDeleteFiles(string $filename)
     {
         $contents = $this->faker()->text;
         $this->createResourceFile($filename, $contents);
@@ -418,11 +408,11 @@ class SharefileAdapterFunctionalTest extends TestCase
     }
 
     /**
-     * Test for it_can_fail.
+     * Test for itCanFail.
      *
      * @test
      */
-    public function it_can_fail() // @codingStandardsIgnoreLine
+    public function itCanFail()
     {
         $this->assertFalse($this->adapter->has('/Foo'));
         $this->assertFalse($this->adapter->read('/Foo'));

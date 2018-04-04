@@ -67,17 +67,17 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_can_get_a_client.
+     * Test for itCanGetAClient.
      *
      * @test
      */
-    public function it_can_get_a_client() // @codingStandardsIgnoreLine
+    public function itCanGetAClient()
     {
         $this->assertInstanceOf(Client::class, $this->adapter->getClient());
     }
 
     /**
-     * Test for it_has_calls_to_get_meta_data.
+     * Test for itHasCallsToGetMetaData.
      *
      * @test
      *
@@ -86,9 +86,10 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  metadataProvider
      */
-    public function it_has_calls_to_get_meta_data(string $method, string $filename) // @codingStandardsIgnoreLine
+    public function itHasCallsToGetMetaData(string $method, string $filename)
     {
-        $this->client->getItemByPath($this->applyPathPrefix($filename))->willReturn($this->mockSharefileItem($filename));
+        $this->client->getItemByPath($this->applyPathPrefix($filename))
+            ->willReturn($this->mockSharefileItem($filename));
 
         $result = $this->adapter->{$method}($filename);
 
@@ -98,7 +99,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_will_not_hold_metadata_after_failing.
+     * Test for itWillNotHoldMetadataAfterFailing.
      *
      * @test
      *
@@ -107,7 +108,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  metadataProvider
      */
-    public function it_will_not_hold_metadata_after_failing(string $method, string $filename) // @codingStandardsIgnoreLine
+    public function itWillNotHoldMetadataAfterFailing(string $method, string $filename)
     {
         $this->client->getItemByPath($this->applyPathPrefix($filename))->willThrow(
             new BadRequest(new Response(404))
@@ -119,7 +120,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_can_read.
+     * Test for itCanRead.
      *
      * @test
      *
@@ -127,7 +128,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_can_read(string $filename) // @codingStandardsIgnoreLine
+    public function itCanRead(string $filename)
     {
         $contents = $this->faker()->text;
 
@@ -153,7 +154,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_can_readstream.
+     * Test for itCanReadstream.
      *
      * @test
      *
@@ -161,7 +162,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_can_readstream(string $filename) // @codingStandardsIgnoreLine
+    public function itCanReadstream(string $filename)
     {
         $this->client->getItemByPath($this->applyPathPrefix($filename))->willReturn(
             $this->mockSharefileItem($filename, [
@@ -191,7 +192,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_can_list_contents.
+     * Test for itCanListContents.
      *
      * @test
      *
@@ -199,7 +200,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_can_list_contents(string $filename) // @codingStandardsIgnoreLine
+    public function itCanListContents(string $filename)
     {
         $client = $this->client;
         $directory = substr($filename, 0, -4);
@@ -247,7 +248,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_can_write_put_and_update.
+     * Test for itCanWritePutAndUpdate.
      *
      * @test
      *
@@ -256,7 +257,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  updateProvider
      */
-    public function it_can_write_put_and_update(string $method, string $filename) // @codingStandardsIgnoreLine
+    public function itCanWritePutAndUpdate(string $method, string $filename)
     {
         $filenamePrefix = $this->applyPathPrefix($filename);
         $dirname = Util::dirname($filenamePrefix);
@@ -288,7 +289,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_can_writestream_updatestream.
+     * Test for itCanWritestreamUpdatestream.
      *
      * @test
      *
@@ -296,7 +297,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_can_writestream_updatestream(string $filename) // @codingStandardsIgnoreLine
+    public function itCanWritestreamUpdatestream(string $filename)
     {
         $filenamePrefix = $this->applyPathPrefix($filename);
         $dirname = Util::dirname($filenamePrefix);
@@ -329,7 +330,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_can_move_a_file.
+     * Test for itCanMoveAFile.
      *
      * @test
      *
@@ -337,7 +338,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_can_move_a_file(string $filename) // @codingStandardsIgnoreLine
+    public function itCanMoveAFile(string $filename)
     {
         $filenamePrefix = $this->applyPathPrefix($filename);
         $newPath = '/targetfolder/new name of '.basename($filename);
@@ -375,7 +376,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_will_return_false_when_a_move_has_failed.
+     * Test for itWillReturnFalseWhenAMoveHasFailed.
      *
      * @test
      *
@@ -383,7 +384,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_will_return_false_when_a_move_has_failed(string $filename) // @codingStandardsIgnoreLine
+    public function itWillReturnFalseWhenAMoveHasFailed(string $filename)
     {
         $filenamePrefix = $this->applyPathPrefix($filename);
         $newPath = '/targetfolder/new name of '.basename($filename);
@@ -419,7 +420,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_can_copy_a_file_to_a_new_folder.
+     * Test for itCanCopyAFileToANewFolder.
      *
      * @test
      *
@@ -427,7 +428,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_can_copy_a_file_to_a_new_folder(string $filename) // @codingStandardsIgnoreLine
+    public function itCanCopyAFileToANewFolder(string $filename)
     {
         $filename = basename($filename);
         $filenamePrefix = $this->applyPathPrefix($filename);
@@ -459,7 +460,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_can_copy_a_file_to_same_folder.
+     * Test for itCanCopyAFileToSameFolder.
      *
      * @test
      *
@@ -467,7 +468,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_can_copy_a_file_to_same_folder(string $filename) // @codingStandardsIgnoreLine
+    public function itCanCopyAFileToSameFolder(string $filename)
     {
         $filename = basename($filename);
         $filenamePrefix = $this->applyPathPrefix($filename);
@@ -501,7 +502,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_can_delete_stuff.
+     * Test for itCanDeleteStuff.
      *
      * @test
      *
@@ -509,7 +510,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_can_delete_stuff(string $filename) // @codingStandardsIgnoreLine
+    public function itCanDeleteStuff(string $filename)
     {
         $filenamePrefix = $this->applyPathPrefix($filename);
         $dirname = Util::dirname($filename);
@@ -552,7 +553,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_can_create_a_directory.
+     * Test for itCanCreateADirectory.
      *
      * @test
      *
@@ -560,7 +561,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_can_create_a_directory(string $filename) // @codingStandardsIgnoreLine
+    public function itCanCreateADirectory(string $filename)
     {
         $path = substr($filename, 0, -4);
         $directory = basename($path);
@@ -587,7 +588,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_returns_false_when_parent_folder_is_not_found.
+     * Test for itReturnsFalseWhenParentFolderIsNotFound.
      *
      * @test
      *
@@ -595,7 +596,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_returns_false_when_parent_folder_is_not_found(string $filename) // @codingStandardsIgnoreLine
+    public function itReturnsFalseWhenParentFolderIsNotFound(string $filename)
     {
         $pathParentPrefix = $this->applyPathPrefix(Util::dirname($filename));
 
@@ -610,7 +611,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_returns_false_when_parent_folder_has_no_rights.
+     * Test for itReturnsFalseWhenParentFolderHasNoRights.
      *
      * @test
      *
@@ -618,7 +619,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_returns_false_when_parent_folder_has_no_rights(string $filename) // @codingStandardsIgnoreLine
+    public function itReturnsFalseWhenParentFolderHasNoRights(string $filename)
     {
         $pathParentPrefix = $this->applyPathPrefix(Util::dirname($filename));
 
@@ -648,7 +649,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_returns_false_when_parent_folder_has_access_control.
+     * Test for itReturnsFalseWhenParentFolderHasAccessControl.
      *
      * @test
      *
@@ -656,7 +657,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_returns_false_when_parent_folder_has_access_control(string $filename) // @codingStandardsIgnoreLine
+    public function itReturnsFalseWhenParentFolderHasAccessControl(string $filename)
     {
         $pathParentPrefix = $this->applyPathPrefix(Util::dirname($filename));
 
@@ -674,7 +675,7 @@ class SharefileAdapterTest extends TestCase
     }
 
     /**
-     * Test for it_returns_false_when_item_is_not_found.
+     * Test for itReturnsFalseWhenItemIsNotFound.
      *
      * @test
      *
@@ -682,7 +683,7 @@ class SharefileAdapterTest extends TestCase
      *
      * @dataProvider  filenameProvider
      */
-    public function it_returns_false_when_item_is_not_found(string $filename) // @codingStandardsIgnoreLine
+    public function itReturnsFalseWhenItemIsNotFound(string $filename)
     {
         $filenamePrefix = $this->applyPathPrefix($filename);
 
