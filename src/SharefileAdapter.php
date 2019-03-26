@@ -423,6 +423,7 @@ class SharefileAdapter extends AbstractAdapter
                 'size' => $item['FileSizeBytes'],
                 'contents' =>  ! empty($contents) ? $contents : false,
                 'stream' => ! empty($stream) ? $stream : false,
+                'id' => isset($item['Id']) ? $item['Id'] : false,
             ],
             $this->returnShareFileItem ? ['sharefile_item' => $item] : []
         );

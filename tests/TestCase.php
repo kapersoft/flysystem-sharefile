@@ -8,7 +8,7 @@ use Sabre\DAV\Exception;
 use Sabre\HTTP\HttpException;
 use Kapersoft\Sharefile\Client;
 use Sabre\DAV\Client as WebDAVClient;
-use Kapersoft\FlysystemSharefile\sharefileAdapter;
+use Kapersoft\FlysystemSharefile\SharefileAdapter;
 use PHPUnit\Framework\TestCase as PHPUnit_Framework_Testcase;
 
 /**
