@@ -93,7 +93,9 @@ class SharefileAdapterTest extends TestCase
 
         $result = $this->adapter->{$method}($filename);
 
-        $expectedResult = $this->calculateExpectedMetadata($filename);
+        $expectedResult = $this->calculateExpectedMetadata($filename, [
+			'id' => false,
+		]);
 
         $this->assertSame($expectedResult, $result);
     }
@@ -148,6 +150,7 @@ class SharefileAdapterTest extends TestCase
 
         $expectedResult = $this->calculateExpectedMetadata($filename, [
             'contents' => $contents,
+			'id' => '1',
          ]);
         $result = $this->adapter->read($filename);
         $this->assertsame($expectedResult, $result);
@@ -187,7 +190,9 @@ class SharefileAdapterTest extends TestCase
         $this->assertSame($contents, stream_get_contents($result['stream']));
 
         $result['stream'] = false;
-        $expectedResult = $this->calculateExpectedMetadata($filename);
+        $expectedResult = $this->calculateExpectedMetadata($filename, [
+			'id' => '2',
+		]);
         $this->assertsame($expectedResult, $result);
     }
 
@@ -240,8 +245,11 @@ class SharefileAdapterTest extends TestCase
             $this->calculateExpectedMetadata($directory.'/folder', [
                 'mimetype' => 'inode/directory',
                 'type' => 'dir',
+				'id' => '2'
             ]),
-            $this->calculateExpectedMetadata($directory.'/folder/file.txt'),
+            $this->calculateExpectedMetadata($directory.'/folder/file.txt', [
+				'id' => '3'
+			]),
         ];
 
         $this->assertsame($expectedResult, $result);
@@ -283,6 +291,7 @@ class SharefileAdapterTest extends TestCase
 
         $expectedResult = $this->calculateExpectedMetadata($filename, [
             'contents' => $contents,
+			'id' => false,
         ]);
 
         $this->assertSame($expectedResult, $result);
@@ -323,7 +332,9 @@ class SharefileAdapterTest extends TestCase
         fseek($resource, 0);
         fwrite($resource, $contents);
 
-        $expectedResult = $this->calculateExpectedMetadata($filename);
+        $expectedResult = $this->calculateExpectedMetadata($filename, [
+			'id' => false,
+		]);
 
         $this->assertSame($expectedResult, $this->adapter->writeStream($filename, $resource, new Config()));
         $this->assertSame($expectedResult, $this->adapter->updateStream($filename, $resource, new Config()));
@@ -582,7 +593,9 @@ class SharefileAdapterTest extends TestCase
 
         $result = $this->adapter->createDir($path);
 
-        $expectedResult = $this->calculateExpectedMetadata($path);
+        $expectedResult = $this->calculateExpectedMetadata($path, [
+			'id' => false,
+		]);
 
         $this->assertSame($result, $expectedResult);
     }
