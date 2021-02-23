@@ -1,5 +1,5 @@
 {
-  "name": "kapersoft/flysystem-sharefile",
+  "name": "creativeorange/flysystem-sharefile",
   "description": "Flysystem Adapter for ShareFile",
   "keywords": [
     "kapersoft",
@@ -21,7 +21,7 @@
   "require": {
     "php": "^7.0",
     "ext-curl": "*",
-    "kapersoft/sharefile-api": "^1.1.0|dev-master",
+    "creativeorange/sharefile-api": "^2.0",
     "league/flysystem": "^1.0.41"
   },
   "require-dev": {
@@ -49,5 +49,14 @@
   "config": {
     "sort-packages": true,
     "process-timeout": 0
-  }
+  },
+  "repositories": [
+    {
+      "type": "composer",
+      "url": "https://satis.creativeorange.dev",
+      "only": [
+        "creativeorange/*"
+      ]
+    }
+  ]
 }
