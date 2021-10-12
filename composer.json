@@ -19,7 +19,7 @@
     }
   ],
   "require": {
-    "php": "^7.0",
+    "php": "^7.0|^8.0",
     "ext-curl": "*",
     "creativeorange/sharefile-api": "^2.0",
     "league/flysystem": "^1.0.41"
